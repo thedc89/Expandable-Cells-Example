@@ -23,14 +23,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        print(tableView.rowHeight)
-    }
-
-
     // TableView DataSource methods
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 21
+        return 20
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -49,7 +44,15 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         print(indexPath.row)
         guard let cell = tableView.cellForRow(at: indexPath) as? ExpandableCell
             else { return }
-        self.expandedRows.insert(indexPath.row)
+        
+        switch cell.isExpanded
+        {
+        case true:
+            self.expandedRows.remove(indexPath.row)
+        case false:
+            self.expandedRows.insert(indexPath.row)
+        }
+        
 
         cell.isExpanded = !cell.isExpanded
         
@@ -64,9 +67,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 
         self.expandedRows.remove(indexPath.row)
         
-            cell.isExpanded = false
-        
-        
+        cell.isExpanded = false
+
         self.tableView.beginUpdates()
         self.tableView.endUpdates()
 
