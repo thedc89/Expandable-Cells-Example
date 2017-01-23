@@ -15,12 +15,6 @@ class ExpandableCell: UITableViewCell {
 
     @IBOutlet weak var imgHeightConstraint: NSLayoutConstraint!
 
-//    override func setSelected(_ selected: Bool, animated: Bool) {
-//        super.setSelected(selected, animated: animated)
-//        
-//        self.imgHeightConstraint.constant = selected ? 128.0 : 0.0
-//    }
-    
     var isExpanded:Bool = false
         {
         didSet

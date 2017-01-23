@@ -19,9 +19,12 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         super.viewDidLoad()
         self.tableView.delegate = self
         self.tableView.dataSource = self
-        self.tableView.estimatedRowHeight = 2.0
         self.tableView.rowHeight = UITableViewAutomaticDimension
-//        self.tableView.tableFooterView = UIView()
+
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        print(tableView.rowHeight)
     }
 
 
@@ -37,45 +40,38 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         return cell
     }
     
+    
+     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 144.0
+    }
     // TableView Delegate methods
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print(indexPath.row)
         guard let cell = tableView.cellForRow(at: indexPath) as? ExpandableCell
             else { return }
+        self.expandedRows.insert(indexPath.row)
+
+        cell.isExpanded = !cell.isExpanded
         
-//            UIView.animate(withDuration: 0.3, animations: {
-//                let offset: CGPoint = self.tableView.contentOffset
-        
-                tableView.beginUpdates()
-//                cell.isExpanded = !cell.isExpanded
-                
-                if self.expandedRows.contains(indexPath.row) {
-                    self.expandedRows.remove(indexPath.row)
-                    cell.isExpanded = false
-                } else {
-                    self.expandedRows.insert(indexPath.row)
-                    cell.isExpanded = true
-                }
-                
-//                self.tableView.layer.removeAllAnimations()
-//                self.tableView.setContentOffset(offset, animated: false)
-//                tableView.scrollToRow(at: indexPath, at: UITableViewScrollPosition.top, animated: true)
-                tableView.endUpdates()
-               
-                
-                
-//            })
-//            
+        self.tableView.beginUpdates()
+        self.tableView.endUpdates()
+
         }
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         guard let cell = tableView.cellForRow(at: indexPath) as? ExpandableCell
             else { return }
-//        UIView.animate(withDuration: 0.3, animations: {
-//            tableView.beginUpdates()
-//            cell.isExpanded = false
-//            tableView.endUpdates()
-//        })
+
+        self.expandedRows.remove(indexPath.row)
+        
+            cell.isExpanded = false
+        
+        
+        self.tableView.beginUpdates()
+        self.tableView.endUpdates()
+
     }
+
+
 }
 
